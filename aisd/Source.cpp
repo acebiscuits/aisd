@@ -64,7 +64,7 @@ public:
 	P& operator [](const int index)
 	{
 		P* tmp = head;
-		for (int i = 0; i < index; i++)
+		for ( int i = 0; i < index; i++ )
 		{
 			tmp = tmp->next;
 		}
