@@ -4,7 +4,8 @@
 #include <locale.h>
 #include <string.h>
 #include <cmath>
- 
+#include <iostream>
+using namespace std;
 class polinom
 {
 public:
@@ -15,38 +16,54 @@ public:
 		int exp;
 		P* next;
 	};
-	P* head;
+	P* head = NULL;
 	polinom(int sizem)
 	{
-		this -> size = sizem;
-		head = new P;
-		P* ptr = head;
-
-		for (int i = size; i >= 0; i--)
+		int new_sizem = -1;
+		if (sizem > -1)
 		{
+			int i = 0;
 			int c = 0;
 
-			printf("\nââåäèòå êîýôôèöèåíò: ");
-			scanf("%d", &c);
-			ptr->coeff = c;
-			ptr->exp = i;
-
-			if (i > 0)
-			{
-				
-				P* elem = new P;
-				ptr->next = elem;
-				ptr = ptr->next;
-
+			while (head == NULL && i <= sizem) {
+				cout << "ââåäèòå êîýôôèöèåíò ìíîãî÷ëåíà ïðè ñòåïåíè" << i << ":" << endl;
+				cin >> c;
+				if (c != 0)
+				{
+					head = new P;
+					head->coeff = c;
+					head->exp = 0;
+					head->next = NULL;
+					new_sizem = i;
+				}
+				else
+				{
+					i++;
+				}
 			}
-			else
+			P* ptr = head;
+			for (i; i <= sizem; i++)
 			{
 
-				ptr->next = NULL;
+				cout << "ââåäèòå êîýôôèöèåíò ìíîãî÷ëåíà ïðè ñòåïåíè" << i << ":" << endl;
+				cin >> c;
 
+				if (c != 0)
+				{
+					ptr->next = new P;
+					ptr = ptr->next;
+					ptr->coeff = c;
+					ptr->exp = i;
+					ptr->next = NULL;
+					new_sizem = i;
+				}
+				else
+				{
+					continue;
+				}
 			}
-
 		}
+		this->size = new_sizem;
 	};
 
 	~polinom()
@@ -80,160 +97,425 @@ public:
 	polinom& operator +(const polinom& obj)
 	{
 
-		polinom new_polinom(this->size);//ÄÎÁÀÂÈÒÜ ÇÄÅÑÜ È Â ÌÈÍÓÑÅ ÏÐÎÂÅÐÊÓ ÍÀ ÍÓËÅÂÎÉ ÓÊÀÇÀÒÅËÜ ÍÀ ÍÅÊÑÒ (ÅÑËÈ ÑÀÉÇ ÁÎËÜØÅ ×ÅÌ ÍÀ ÑÀÌÎÌ ÄÅËÅ ÝËÅÌÅÍÒÎÂ)
-		P* tmp = new_polinom.head;
-		P* tmp_this = this->head;
-		P* tmp_obj = obj.head;
-		
-		if ( this->size >= obj.size )
-		{	
-			for ( int i = this->size; i >= 0; i-- )
+		polinom new_polinom(-1);
+
+		if (this->head != NULL && obj.head != NULL)
+		{
+			new_polinom.head = new P;
+			P* tmp = new_polinom.head;
+			P* tmp_this = this->head;
+			P* tmp_obj = obj.head;
+			if (tmp_this->exp > tmp_obj->exp)
 			{
-
-				while ( tmp_this->exp > obj.size )
-				{
-					tmp->coeff = tmp_this->coeff;
-					tmp_this = tmp_this->next;
-				}
-				for ( int j = obj.size; j >= i; j-- )
-				{
-					if ( tmp_this->coeff == tmp_obj->coeff )
-					{
-						tmp->coeff = tmp_this->coeff + tmp->coeff;
-					}
-
-					tmp_obj = tmp_obj->next;
-				}
-
-				tmp->exp = tmp_this->exp;
-				tmp_this = tmp_this->next;
-				tmp_obj = obj.head;
-				tmp = tmp->next;
-			}
-		}
-
-		if( this->size < obj.size )
-		{ 
-			for (int i = obj.size; i >= 0; i--)
-			{
-				while (tmp_obj->exp > this->size)
-				{
-					tmp->coeff = tmp_obj->coeff;
-					tmp_obj = tmp_obj->next;
-				}
-
-				for (int j = this->size; j >= i; j--)
-				{
-					if (tmp_this->coeff == tmp_obj->coeff)
-					{
-						tmp->coeff = tmp_this->coeff + tmp->coeff;
-					}
-
-					tmp_this = tmp_this->next;
-				}
-
+				tmp->coeff = tmp_obj->coeff;
 				tmp->exp = tmp_obj->exp;
-				tmp_this = this->head;
+				tmp->next = NULL;
 				tmp_obj = tmp_obj->next;
-				tmp = tmp->next;
+			}
+			else if (tmp_this->exp == tmp_obj->exp)
+			{
+				tmp->coeff = tmp_obj->coeff + tmp_this->coeff;
+				tmp->exp = tmp_obj->exp;
+				tmp->next = NULL;
+				tmp_obj = tmp_obj->next;
+				tmp_this = tmp_this->next;
+			}
+			else
+			{
+				tmp->coeff = tmp_this->coeff;
+				tmp->exp = tmp_this->exp;
+				tmp->next = NULL;
+				tmp_this = tmp_this->next;
+			}
+
+			if (this->size >= obj.size)
+			{
+				for (int i = 0; i <= this->size; i++)
+				{
+					if (tmp_this != NULL && tmp_obj != NULL&& tmp_this->exp > tmp_obj->exp)
+					{
+						while (tmp_obj->exp < tmp_this->exp && tmp_obj != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_obj->coeff;
+							tmp->exp = tmp_obj->exp;
+							tmp_obj = tmp_obj->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp < tmp_obj->exp)
+					{
+						while (tmp_this->exp < tmp_obj->exp && tmp_this != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_this->coeff;
+							tmp->exp = tmp_this->exp;
+							tmp_this = tmp_this->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff + tmp_obj->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp_obj = tmp_obj->next;
+						tmp->next = NULL;
+					}
+					else if(tmp_this != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp->next = NULL;
+					}
+				}
+				return new_polinom;
+			}
+
+			if (this->size < obj.size)
+			{
+				for (int i = 0; i <= obj.size; i++)
+				{
+					if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp > tmp_obj->exp)
+					{
+						while (tmp_obj->exp < tmp_this->exp && tmp_obj != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_obj->coeff;
+							tmp->exp = tmp_obj->exp;
+							tmp_obj = tmp_obj->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp < tmp_obj->exp)
+					{
+						while (tmp_this->exp < tmp_obj->exp && tmp_this != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_this->coeff;
+							tmp->exp = tmp_this->exp;
+							tmp_this = tmp_this->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff + tmp_obj->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp_obj = tmp_obj->next;
+						tmp->next = NULL;
+					}
+					else if (tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp->next = NULL;
+					}
+				}
+				return new_polinom;
 			}
 		}
-
-		return new_polinom;
+		else
+		{
+			if (this->head != NULL && obj.head == NULL)
+			{
+				new_polinom.head = new P;
+				P* tmp = new_polinom.head;
+				P* tmp_this = this->head;
+				tmp->exp = tmp_this->exp;
+				tmp->coeff = tmp_this->coeff;
+				tmp_this = tmp_this->next;
+				tmp->next = NULL;
+				for (int i = 1; i <= this->size; i++)
+				{
+					if (tmp_this != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp->next = NULL;
+					}
+				}
+				return new_polinom;
+			}
+			else if (this->head == NULL && obj.head != NULL)
+			{
+				new_polinom.head = new P;
+				P* tmp = new_polinom.head;
+				P* tmp_obj = obj.head;
+				tmp->exp = tmp_obj->exp;
+				tmp->coeff = tmp_obj->coeff;
+				tmp_obj = tmp_obj->next;
+				tmp->next = NULL;
+				for (int i = 1; i <= obj.size; i++)
+				{
+					if (tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_obj->coeff;
+						tmp->exp = tmp_obj->exp;
+						tmp_obj = tmp_obj->next;
+						tmp->next = NULL;
+					}
+				}
+				return new_polinom;
+			}
+			else
+			{
+				return new_polinom;
+			}
+		}
 	}
 
 	polinom& operator -(const polinom& obj)
 	{
 
-		polinom new_polinom(this->size);
-		P* tmp = new_polinom.head;
-		P* tmp_this = this->head;
-		P* tmp_obj = obj.head;
+		polinom new_polinom(-1);
 
-		if (this->size >= obj.size)
+		if (this->head != NULL && obj.head != NULL)
 		{
-			for (int i = this->size; i >= 0; i--)
+			new_polinom.head = new P;
+			P* tmp = new_polinom.head;
+			P* tmp_this = this->head;
+			P* tmp_obj = obj.head;
+			if (tmp_this->exp > tmp_obj->exp)
 			{
-
-				while (tmp_this->exp > obj.size)
-				{
-					tmp->coeff = tmp_this->coeff;
-					tmp_this = tmp_this->next;
-				}
-				for (int j = obj.size; j >= i; j--)
-				{
-					if (tmp_this->coeff == tmp_obj->coeff)
-					{
-						tmp->coeff = tmp_this->coeff - tmp->coeff;
-					}
-
-					tmp_obj = tmp_obj->next;
-				}
-
-				tmp->exp = tmp_this->exp;
-				tmp_this = tmp_this->next;
-				tmp_obj = obj.head;
-				tmp = tmp->next;
-			}
-		}
-
-		if (this->size < obj.size)
-		{
-			for (int i = obj.size; i >= 0; i--)
-			{
-				while (tmp_obj->exp > this->size)
-				{
-					tmp->coeff = tmp_obj->coeff;
-					tmp_obj = tmp_obj->next;
-				}
-
-				for (int j = this->size; j >= i; j--)
-				{
-					if (tmp_this->coeff == tmp_obj->coeff)
-					{
-						tmp->coeff = tmp_this->coeff - tmp->coeff;
-					}
-
-					tmp_this = tmp_this->next;
-				}
-
+				tmp->coeff = tmp_obj->coeff;
 				tmp->exp = tmp_obj->exp;
-				tmp_this = this->head;
+				tmp->next = NULL;
 				tmp_obj = tmp_obj->next;
-				tmp = tmp->next;
+			}
+			else if (tmp_this->exp == tmp_obj->exp)
+			{
+				tmp->coeff = tmp_this->coeff - tmp_obj->coeff;
+				tmp->exp = tmp_obj->exp;
+				tmp->next = NULL;
+				tmp_obj = tmp_obj->next;
+				tmp_this = tmp_this->next;
+			}
+			else
+			{
+				tmp->coeff = tmp_this->coeff;
+				tmp->exp = tmp_this->exp;
+				tmp->next = NULL;
+				tmp_this = tmp_this->next;
+			}
+
+			if (this->size >= obj.size)
+			{
+				for (int i = 0; i <= this->size; i++)
+				{
+					if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp > tmp_obj->exp)
+					{
+						while (tmp_obj->exp < tmp_this->exp && tmp_obj != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_obj->coeff;
+							tmp->exp = tmp_obj->exp;
+							tmp_obj = tmp_obj->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp < tmp_obj->exp)
+					{
+						while (tmp_this->exp < tmp_obj->exp && tmp_this != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_this->coeff;
+							tmp->exp = tmp_this->exp;
+							tmp_this = tmp_this->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff - tmp_obj->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp_obj = tmp_obj->next;
+						tmp->next = NULL;
+					}
+					else if (tmp_this != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp->next = NULL;
+					}
+				}
+				new_polinom.size = this->size;
+				return new_polinom;
+			}
+
+			if (this->size < obj.size)
+			{
+				for (int i = 0; i <= obj.size; i++)
+				{
+					if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp > tmp_obj->exp)
+					{
+						while (tmp_obj->exp < tmp_this->exp && tmp_obj != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_obj->coeff;
+							tmp->exp = tmp_obj->exp;
+							tmp_obj = tmp_obj->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL && tmp_this->exp < tmp_obj->exp)
+					{
+						while (tmp_this->exp < tmp_obj->exp && tmp_this != NULL)
+						{
+							tmp->next = new P;
+							tmp = tmp->next;
+							tmp->coeff = tmp_this->coeff;
+							tmp->exp = tmp_this->exp;
+							tmp_this = tmp_this->next;
+							tmp->next = NULL;
+						}
+					}
+					else if (tmp_this != NULL && tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff - tmp_obj->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp_obj = tmp_obj->next;
+						tmp->next = NULL;
+					}
+					else if (tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp->next = NULL;
+					}
+				}
+				new_polinom.size = obj.size;
+				return new_polinom;
 			}
 		}
-
-		return new_polinom;
+		else
+		{
+			if (this->head != NULL && obj.head == NULL)
+			{
+				new_polinom.head = new P;
+				P* tmp = new_polinom.head;
+				P* tmp_this = this->head;
+				tmp->exp = tmp_this->exp;
+				tmp->coeff = tmp_this->coeff;
+				tmp_this = tmp_this->next;
+				tmp->next = NULL;
+				for (int i = 1; i <= this->size; i++)
+				{
+					if (tmp_this != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_this->coeff;
+						tmp->exp = tmp_this->exp;
+						tmp_this = tmp_this->next;
+						tmp->next = NULL;
+					}
+				}
+				new_polinom.size = this->size;
+				return new_polinom;
+			}
+			else if (this->head == NULL && obj.head != NULL)
+			{
+				new_polinom.head = new P;
+				P* tmp = new_polinom.head;
+				P* tmp_obj = obj.head;
+				tmp->exp = tmp_obj->exp;
+				tmp->coeff = tmp_obj->coeff;
+				tmp_obj = tmp_obj->next;
+				tmp->next = NULL;
+				for (int i = 1; i <= obj.size; i++)
+				{
+					if (tmp_obj != NULL)
+					{
+						tmp->next = new P;
+						tmp = tmp->next;
+						tmp->coeff = tmp_obj->coeff;
+						tmp->exp = tmp_obj->exp;
+						tmp_obj = tmp_obj->next;
+						tmp->next = NULL;
+					}
+				}
+				new_polinom.size = obj.size;
+				return new_polinom;
+			}
+			else
+			{
+				return new_polinom;
+			}
+		}
 	}
 
 	polinom& operator *(const double val)
 	{
 		P* tmp_this = this->head;
 
-		do
+		while (tmp_this != NULL);
 		{
 			
 			tmp_this->coeff *= val;
 			tmp_this = tmp_this->next;
 
-		} while (tmp_this->next != NULL);
+		} 
 
 		return *this;
 
 		/*
-		polinom new_polinom(this->size);
+		polinom new_polinom(-1);
 		P* tmp = new_polinom.head;
 		P* tmp_this = this->head;
-		do
+		if(this->head)
 		{
-
-			tmp = tmp_this->coeff * val;
+			new_polinom.head = new P;
+			tmp->coeff = tmp_this->coeff * val;
 			tmp->exp = tmp_this->exp;
+			tmp->next = NULL;
 			tmp_this = tmp_this->next;
+		}
+		while (tmp_this != NULL);
+		{
+			tmp->next = new P;
 			tmp = tmp->next;
+			tmp->coeff = tmp_this->coeff * val;
+			tmp->exp = tmp_this->exp;
+			tmp->next = NULL;
+			tmp_this = tmp_this->next;
 
-		} while (tmp_this->next != NULL);
+		} 
 		*/
 	}
 
@@ -243,10 +525,10 @@ public:
 		double res = 0;
 		P * tmp_this = this->head;
 
-		do 
+		while (tmp_this != NULL);
 		{
 			res += tmp_this->coeff * pow(val, tmp_this->exp);
-		} while (tmp_this->next != NULL);
+		} 
 
 		return res;
 	}
@@ -271,9 +553,15 @@ int main()
 
 	}
 
-	polinom polinom(size);
-	polinom[1];
-	polinom.set(4, polinom[2]);
+
+	polinom polinom1(size);
+	polinom1[1];
+	polinom1.set(4, polinom1[2]);
+	polinom new_polinom(size);
+	new_polinom + polinom1;
+	new_polinom - polinom1;
+	new_polinom * 3;
+	new_polinom.calculate(new_polinom, 3);
 
 	return 0;
 }
