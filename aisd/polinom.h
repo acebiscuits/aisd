@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -12,36 +13,41 @@ using namespace std;
 class polinom
 {
 
-	protected:
-		int size;
-		struct P;
-		P* head = NULL;
-	public:
+protected:
+	int size;
+	struct P;
+	P* head = NULL;
+public:
 
-		friend polinom operator *(const double val, polinom& obj);
+	friend polinom operator *(const double val, polinom& obj);
 
-		
-		polinom(int sizem = 0);
+	friend ostream &operator << (ostream& os, const polinom& set);
 
-		polinom(const polinom& obj);
+	polinom(int sizem = 0);
 
-		~polinom();
+	polinom(const polinom& obj);
 
-		double operator [](const int exp);
+	~polinom();
 
-		void set(const double coeff, const int exp);
+	double* task(const polinom& obj);
 
-		bool operator == (const polinom& obj) const;
+	double operator [](const int exp);
 
-		polinom operator +(const polinom& obj);
+	void set(const double coeff, const int exp);
 
-		polinom operator -(const polinom& obj);
+	bool operator == (const polinom& obj) const;
 
-		polinom operator *(const double val);
+	polinom operator +(const polinom& obj);
 
-		double calculate(const double val);
+	polinom operator -(const polinom& obj);
 
-		void print()const;
+	polinom operator *(const double val);
+
+	double calculate(const double val);
+
+	//void print()const;
 };
 polinom operator *(const double val, polinom& obj);
+
+
 #endif
