@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 #include <locale.h>
@@ -41,9 +40,9 @@ int main()
 		}
 
 		polinom CRPolinom(size);
-		cout << "Многочлен: ";
-		CRPolinom.print();
-		cout << endl;
+
+		cout << "Многочлен: " << CRPolinom << endl;
+
 		while (true) {
 			cout << "Создать новый многочлен - 1" << endl;
 			cout << "Посмотреть коэффициент при заданной степени - 2" << endl;
@@ -63,6 +62,7 @@ int main()
 				cout << "Вычесть один многочлен из другого - 5" << endl;
 				cout << "Умножить многочлен на скаляр - 6" << endl;
 				cout << "Вычисление значение многочлена при заданном х - 7" << endl;
+				cout << "Найти действительные корни многчлена х - 7" << endl;
 				cout << "Закончить - 0" << endl;
 				cin >> ch2;
 
@@ -76,6 +76,7 @@ int main()
 			if (ch2 == 2)
 			{
 
+				cout << "Многочлен: " << CRPolinom << endl;
 				int exp;
 				cout << "Введите степень" << endl;
 				cin >> exp;
@@ -93,7 +94,7 @@ int main()
 
 			if (ch2 == 3)
 			{
-
+				cout << "Многочлен: " << CRPolinom << endl;
 				int exp;
 				cout << "Введите степень" << endl;
 				cin >> exp;
@@ -108,18 +109,14 @@ int main()
 				cin >> coeff;
 				CRPolinom.set(coeff, exp);
 
-				cout << "Результат: ";
-				CRPolinom.print();
-				cout << endl;
+				cout << "Результат: " << CRPolinom << endl;
 
 			}
 
 			if (ch2 == 4)
 			{
 
-				cout << "Многчлен: ";
-				CRPolinom.print();
-				cout << endl;
+				cout << "Многочлен: " << CRPolinom << endl;
 
 				int sizem;
 				cout << "Введите степень многочлена, с которым нужно сложить: " << endl;
@@ -133,18 +130,14 @@ int main()
 
 				polinom result = CRPolinom + SECPolinom;
 
-				cout << "Результат: ";
-				result.print();
-				cout << endl;
+				cout << "Результат: " << CRPolinom << endl;
 
 			}
 
 			if (ch2 == 5)
 			{
 
-				cout << "Многчлен: ";
-				CRPolinom.print();
-				cout << endl;
+				cout << "Многочлен: " << CRPolinom << endl;
 
 				int sizem;
 				cout << "Введите степень многочлена, который нужно вычисть: " << endl;
@@ -158,36 +151,28 @@ int main()
 
 				polinom result = CRPolinom - SECPolinom;
 
-				cout << "Результат: ";
-				result.print();
-				cout << endl;
+				cout << "Результат: " << CRPolinom << endl;
 
 			}
 
 			if (ch2 == 6)
 			{
 
-				cout << "Многчлен: ";
-				CRPolinom.print();
-				cout << endl;
+				cout << "Многочлен: " << CRPolinom << endl;
 
 				double val;
 				cout << "Введите число, на которое нужно умножить многочлен: " << endl;
 				cin >> val;
 				polinom result = CRPolinom * val;
 
-				cout << "Результат: ";
-				result.print();
-				cout << endl;
+				cout << "Результат: " << CRPolinom << endl;
 
 			}
 
 			if (ch2 == 7)
 			{
 
-				cout << "Многчлен: ";
-				CRPolinom.print();
-				cout << endl;
+				cout << "Многочлен: " << CRPolinom << endl;
 
 				double val;
 				cout << "Введите число, относительно которого нужно посчитать многочлен: " << endl;
