@@ -19,7 +19,7 @@ protected:
 	P* head = NULL;
 public:
 
-	friend polinom operator *(const double val, polinom& obj);
+	friend polinom operator *(const double& val, polinom& obj);
 
 	friend ostream &operator << (ostream& os, const polinom& set);
 
@@ -29,11 +29,11 @@ public:
 
 	~polinom();
 
-	double* task(const polinom& obj);
+	void task();
 
-	double operator [](const int exp);
+	double operator [](const int& exp);
 
-	void set(const double coeff, const int exp);
+	void set(const double& coeff, const int& exp);
 
 	bool operator == (const polinom& obj) const;
 
@@ -41,13 +41,12 @@ public:
 
 	polinom operator -(const polinom& obj);
 
-	polinom operator *(const double val);
+	polinom operator *(const double& val);
 
-	double calculate(const double val);
+	double calculate(const double& val);
 
 	//void print()const;
 };
-polinom operator *(const double val, polinom& obj);
 
 
 #endif
