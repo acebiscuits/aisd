@@ -152,7 +152,7 @@ int main()
 
 				polinom result = CRPolinom - SECPolinom;
 
-				cout << "Результат: " << CRPolinom << endl;
+				cout << "Результат: " << result << endl;
 
 			}
 

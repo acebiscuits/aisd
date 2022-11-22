@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <iostream>
 #include "polinom.h"
+#include <limits>
 using namespace std;
 
 struct polinom::P
@@ -100,7 +101,7 @@ bool polinom::operator == (const polinom& obj) const
 		for (int i = 0; i < this->size; i++)
 		{
 
-			if (tmp_this->exp == tmp_obj->exp && tmp_this->coeff == tmp_obj->coeff)
+			if (tmp_this->exp == tmp_obj->exp && std::fabs(tmp_this->coeff - tmp_obj->coeff) < std::numeric_limits<double>::epsilon())
 			{
 				tmp_obj = tmp_obj->next;
 				tmp_this = tmp_this->next;
@@ -776,7 +777,7 @@ polinom polinom::operator -(const polinom& obj)
 			}
 			else if (tmp_this->exp == tmp_obj->exp)
 			{
-				while (tmp_this && tmp_obj && tmp_this->exp == tmp_obj->exp && tmp_this->coeff == tmp_obj->coeff)
+				while (tmp_this && tmp_obj && tmp_this->exp == tmp_obj->exp && std::fabs(tmp_this->coeff - tmp_obj->coeff) < std::numeric_limits<double>::epsilon())
 				{
 
 					tmp_obj = tmp_obj->next;
@@ -889,7 +890,7 @@ polinom polinom::operator -(const polinom& obj)
 					}
 					else if (tmp_this != NULL && tmp_obj != NULL)
 					{
-						if (tmp_this->coeff - tmp_obj->coeff != 0)
+						if (std::fabs(tmp_this->coeff - tmp_obj->coeff) > std::numeric_limits<double>::epsilon())
 						{
 
 							tmp->next = new P;
@@ -963,7 +964,7 @@ polinom polinom::operator -(const polinom& obj)
 					else if (tmp_this != NULL && tmp_obj != NULL)
 					{
 
-						if (tmp_this->coeff - tmp_obj->coeff != 0)
+						if (std::fabs(tmp_this->coeff - tmp_obj->coeff) > std::numeric_limits<double>::epsilon())
 						{
 
 							tmp->next = new P;
