@@ -19,7 +19,14 @@ struct polinom::P
 	P* next;
 
 };
-
+double polinom::getcoeff(int i)
+{
+	double c;
+	cout << "введите коэффициент многочлена при степени " << i << ": ";
+	cin >> c;
+	cout << endl;
+	return c;
+}
 polinom::polinom(int sizem)
 {
 
@@ -29,14 +36,12 @@ polinom::polinom(int sizem)
 	{
 
 		int i = 0;
-		int c = 0;
+		double c;
 
 		while (head == NULL && i <= sizem)
 		{
 
-			cout << "введите коэффициент многочлена при степени " << i << ": ";
-			cin >> c;
-			cout << endl;
+			c = this->getcoeff(i);
 
 			if (c != 0)
 			{
@@ -62,9 +67,7 @@ polinom::polinom(int sizem)
 		for (i; i <= sizem; i++)
 		{
 
-			cout << "введите коэффициент многочлена при степени " << i << ": ";
-			cin >> c;
-			cout << endl;
+			c = this->getcoeff(i);
 
 			if (c != 0)
 			{
@@ -217,8 +220,8 @@ void polinom::task()
 		cout << "многочлен не 3 степени" << endl;
 
 	}
-	double* arr = new double [3];
-	double* res = new double [3];
+	double* arr = new double[3];
+	double* res = new double[3];
 	P* tmp = this->head;
 	P* tmpadd = this->head;
 	double add;
@@ -234,14 +237,14 @@ void polinom::task()
 	add = tmpadd->coeff;
 	for (int i = 0; i < this->size; i++)
 	{
-		
+
 		if (tmp)
 		{
 
-			arr[i] = tmp->coeff/add;
+			arr[i] = tmp->coeff / add;
 			tmp = tmp->next;
 		}
-	
+
 
 
 	}
@@ -319,15 +322,15 @@ void polinom::task()
 
 	if (S > 0)
 	{
-		
 
-	double Fi = pow(3, -1) * acos(R / sqrt(Q * Q * Q));
-	res[0] = -2 * sqrt(Q) * cos(Fi) - arr[2] / 3;
-	res[1] = -2 * sqrt(Q) * cos(Fi+(2*pow(3,-1))* acos(-1)) - arr[2] / 3;
-	res[2] = -2 * sqrt(Q) * cos(Fi - (2 * pow(3, -1)) * acos(-1)) - arr[2] / 3;
-	cout << "три вещестыенных корня,x1: " << res[0] << " x2: " << res[1] << " x3: " << res[2] << endl;
-	delete[] arr;
-	delete[] res;
+
+		double Fi = pow(3, -1) * acos(R / sqrt(Q * Q * Q));
+		res[0] = -2 * sqrt(Q) * cos(Fi) - arr[2] / 3;
+		res[1] = -2 * sqrt(Q) * cos(Fi + (2 * pow(3, -1)) * acos(-1)) - arr[2] / 3;
+		res[2] = -2 * sqrt(Q) * cos(Fi - (2 * pow(3, -1)) * acos(-1)) - arr[2] / 3;
+		cout << "три вещестыенных корня,x1: " << res[0] << " x2: " << res[1] << " x3: " << res[2] << endl;
+		delete[] arr;
+		delete[] res;
 	}
 
 	else if (S < 0)
@@ -339,11 +342,11 @@ void polinom::task()
 
 			double e = exp(1);
 			double z = abs(R) / sqrt(Q * Q * Q);
-			double Fi = pow(3, -1) * log(   z  +   sqrt(z*z - 1)   );
+			double Fi = pow(3, -1) * log(z + sqrt(z * z - 1));
 			double Fi1 = (-1) * Fi;
 
 			double sgn = (R > 0) ? 1 : ((R < 0) ? -1 : 0);
-			res[0] = (-2) * sgn * sqrt(Q) *  ((pow(e, Fi) + pow(e, Fi1))/2) - arr[2]/3;
+			res[0] = (-2) * sgn * sqrt(Q) * ((pow(e, Fi) + pow(e, Fi1)) / 2) - arr[2] / 3;
 
 			cout << "один вещественный корень, x1: " << res[0] << endl;
 			delete[] arr;
@@ -383,7 +386,7 @@ void polinom::task()
 	{
 
 		res[0] = -2 * cbrt(R) - arr[2] / 3;
-		res[1] =  cbrt(R) - arr[2] / 3;
+		res[1] = cbrt(R) - arr[2] / 3;
 
 		cout << "два вещественных корня x1: " << res[0] << " x2: " << res[1] << endl;
 		delete[] arr;
@@ -1167,7 +1170,7 @@ double polinom::calculate(const double& val)
 
 				cout << *this <<" + ";
 				tmp = tmp->next;
-				
+
 			}
 			cout << *this;
 		}

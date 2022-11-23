@@ -21,13 +21,15 @@ public:
 
 	friend polinom operator *(const double& val, polinom& obj);
 
-	friend ostream &operator << (ostream& os, const polinom& set);
+	friend ostream& operator << (ostream& os, const polinom& set);
 
 	polinom(int sizem = 0);
 
 	polinom(const polinom& obj);
 
 	~polinom();
+
+	double getcoeff(int i);
 
 	void task();
 

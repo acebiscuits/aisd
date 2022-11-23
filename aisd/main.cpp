@@ -15,13 +15,26 @@ int main()
 	int ch = 0;
 	int ch2 = 0;
 
-	cout << "Создать многочлен - 1" << endl << "Закончить - 0" << endl;
-	cin >> ch;
 
-	while (ch != 1 && ch != 0)
-	{
-		cout << "Создать многочлен - 1" << endl << "Закончить - 0" << endl;
-		cin >> ch;
+	while (true) {
+		try {
+			cout << "Создать многочлен - 1" << endl << "Закончить - 0" << endl;
+			while (!(cin >> ch) || (cin.peek() != '\n'))
+			{
+				cin.clear();
+				while (cin.get() != '\n');
+				throw "введен текст";
+			}
+			if (ch != 1 && ch != 0)
+			{
+				cout << "введено не то число" << endl;
+			}
+			else { break; };
+		}
+		catch (const char* e)
+		{
+			cout << e << endl;
+		}
 	}
 	while (ch == 1)
 	{
@@ -54,7 +67,7 @@ int main()
 			cout << "Найти действительные корни многчлена х - 8" << endl;
 			cout << "Закончить - 0" << endl;
 			cin >> ch2;
-			while (ch2 != 1 && ch2 != 2 && ch2 != 3 && ch2 != 4 && ch2 != 5 && ch2 != 6 && ch2 != 7 && ch2 != 0 && ch2!=8)
+			while (ch2 != 1 && ch2 != 2 && ch2 != 3 && ch2 != 4 && ch2 != 5 && ch2 != 6 && ch2 != 7 && ch2 != 0 && ch2 != 8)
 			{
 				cout << "Создать новый многочлен - 1" << endl;
 				cout << "Посмотреть коэффициент при заданной степени - 2" << endl;
@@ -131,7 +144,7 @@ int main()
 
 				polinom result = CRPolinom + SECPolinom;
 
-				cout << "Результат: " << CRPolinom << endl;
+				cout << "Результат: " << result << endl;
 
 			}
 
